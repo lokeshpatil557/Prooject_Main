@@ -1,0 +1,23 @@
+langchain==0.3.23
+langchain-community==0.3.21
+sentence-transformers==4.0.2
+langdetect==1.0.9
+google-generativeai==0.8.4
+googletrans
+##googletrans==4.0.0rc1
+guardrails-ai
+#guardrails hub install hub://guardrails/toxic_language
+uvicorn[standard]
+sqlite-vec
+fastapi
+youtube-transcript-api
+tiktoken
+docling==2.32.0
+python-dotenv==1.1.0
+plotly==6.1.2
+python-jose[cryptography]
+python-multipart
+boto3==1.38.45
+requests==2.32.2
+langfuse>=3,<4
+mem0ai

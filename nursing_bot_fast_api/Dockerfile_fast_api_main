@@ -1,0 +1,29 @@
+FROM python:3.10.10-slim
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=True
+ENV APP_HOME=/app
+
+# Set working directory
+WORKDIR $APP_HOME
+
+# Copy project files
+COPY . ./
+
+# Expose FastAPI port
+EXPOSE 8080
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirement.txt .
+RUN pip install --no-cache-dir torch plotly
+RUN pip install --no-cache-dir -r requirement.txt
+
+# Configure and install Guardrails
+RUN guardrails configure --enable-metrics --enable-remote-inferencing --token "token"
+RUN guardrails hub install hub://guardrails/toxic_language
+
+# Start FastAPI app
+CMD ["uvicorn", "new_fast_api:app", "--host", "0.0.0.0", "--port", "8080"]

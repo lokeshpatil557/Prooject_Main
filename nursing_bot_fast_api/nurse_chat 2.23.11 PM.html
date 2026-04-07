@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nurse Chat – Gemini Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f4f4f4;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        #chat {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            height: 400px;
+            width: 600px;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .you {
+            color: #2980b9;
+        }
+        .bot {
+            color: #27ae60;
+        }
+        #input {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🧠 Nurse Gemini Chat</h2>
+<div id="chat"></div>
+
+<div id="input">
+    <input type="text" id="question" placeholder="Type your question..." size="60">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+    const chatBox = document.getElementById("chat");
+
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huIiwicm9sZSI6Im51cnNlIiwib3JnX2lkIjoxLCJvcmdhbmlzYXRpb25fbmFtZSI6Im1pbmRib3dzZXIiLCJleHAiOjE3NzY0ODYyMjR9._lLOoDzQR-jMdpCz2n0cKmFa4Y7LkG8HaS-t-haSgwc"; // 🔐 Replace this manually for now
+    const socket = new WebSocket(`ws://127.0.0.1:8080/backend-api/ws/nurse/chat?token=${token}`);
+
+    // const socket = new WebSocket("ws://localhost:8080/backend-api/ws/nurse/chat"); // ✅ your FastAPI WebSocket endpoint
+
+    socket.onopen = () => {
+        chatBox.innerHTML += `<div class="message bot">🤖 Connected to Nurse Gemini Bot</div>`;
+    };
+
+    socket.onmessage = (event) => {
+        chatBox.innerHTML += `<div class="message bot">🤖 ${event.data}</div>`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+    };
+
+    socket.onclose = () => {
+        chatBox.innerHTML += `<div class="message bot">❌ Disconnected from server</div>`;
+    };
+
+    function sendMessage() {
+        const input = document.getElementById("question");
+        const message = input.value.trim();
+        if (message) {
+            chatBox.innerHTML += `<div class="message you">🩺 You: ${message}</div>`;
+            socket.send(message);
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+</script>
+
+</body>
+</html>
