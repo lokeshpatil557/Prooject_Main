@@ -126,13 +126,12 @@ def generate_presigned_url(file_name: str) -> str:
 
 
 app = FastAPI(
-    title="Lokesh API",   # 👈 your change
+    title="Lokesh + Friend API",   # 👈 merged result
     root_path="/backend-api",
     docs_url="/docs",
     redoc_url=None,
     openapi_url="/openapi.json"
 )
-
 
 #Allow all origins (for development/testing only)
 app.add_middleware(
@@ -250,7 +249,9 @@ def lokesh_api():
 def add_numbers(a: int, b: int):
     return {"result": a + b}
 
-
+@app.get("/friend")
+def friend_api():
+    return {"message": "Friend API working"}
 
 @app.post("/login/nurse", response_model=LoginResponse)
 def login_nurse(data: LoginRequest):
