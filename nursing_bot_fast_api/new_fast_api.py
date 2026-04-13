@@ -117,13 +117,20 @@ def generate_presigned_url(file_name: str) -> str:
 # app = FastAPI(
 
 
+# app = FastAPI(
+#     root_path="/backend-api",
+#     docs_url="/docs",
+#     redoc_url=None,
+#     openapi_url="/openapi.json"
+# )
+
 app = FastAPI(
+    title="Friend API",   # 👈 ADD THIS LINE
     root_path="/backend-api",
     docs_url="/docs",
     redoc_url=None,
     openapi_url="/openapi.json"
 )
-
 
 #Allow all origins (for development/testing only)
 app.add_middleware(
@@ -233,7 +240,9 @@ app.openapi = custom_openapi
 
 
 
-
+@app.get("/friend")
+def friend_api():
+    return {"message": "Friend API working"}
 
 @app.post("/login/nurse", response_model=LoginResponse)
 def login_nurse(data: LoginRequest):
