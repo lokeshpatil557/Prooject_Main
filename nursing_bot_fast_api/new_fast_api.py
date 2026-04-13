@@ -117,7 +117,16 @@ def generate_presigned_url(file_name: str) -> str:
 # app = FastAPI(
 
 
+# app = FastAPI(
+#     root_path="/backend-api",
+#     docs_url="/docs",
+#     redoc_url=None,
+#     openapi_url="/openapi.json"
+# )
+
+
 app = FastAPI(
+    title="Lokesh API",   # 👈 your change
     root_path="/backend-api",
     docs_url="/docs",
     redoc_url=None,
@@ -232,6 +241,14 @@ app.openapi = custom_openapi
 
 
 
+@app.get("/lokesh")
+def lokesh_api():
+    return {"message": "Lokesh API working"}
+
+
+@app.get("/lokesh-add")
+def add_numbers(a: int, b: int):
+    return {"result": a + b}
 
 
 
